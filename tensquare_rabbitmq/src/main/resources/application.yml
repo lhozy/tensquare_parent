@@ -2,4 +2,4 @@ server:
   port: 8003
 spring:
   rabbitmq:
-    host: 127.0.0.1
+    host: 192.168.204.129
