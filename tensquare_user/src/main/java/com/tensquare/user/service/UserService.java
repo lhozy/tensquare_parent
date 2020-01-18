@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import util.IdWorker;
@@ -45,6 +46,8 @@ public class UserService {
 
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 /**
 	 * 查询全部列表
@@ -206,6 +209,7 @@ public class UserService {
 
 		//2.保存用户到数据库
 		user.setId( idWorker.nextId()+"" );
+		user.setPassword(passwordEncoder.encode(user.getPassword()));//加密
 		user.setFollowcount(0);//关注数
 		user.setFanscount(0);//粉丝数
 		user.setOnline(0L);//在线时长
@@ -216,5 +220,13 @@ public class UserService {
 
 		//3.用户注册成功后，清除redis中的验证码
 		redisTemplate.delete("sms.checkcode."+user.getMobile());
+	}
+
+	public User login(String mobile, String password) {
+		User user = userDao.findByMobile(mobile);
+		if(user != null && passwordEncoder.matches(password,user.getPassword())){
+			return user;
+		}
+		return null;
 	}
 }
