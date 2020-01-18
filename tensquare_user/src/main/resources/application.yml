@@ -15,3 +15,9 @@ spring:
     host: 192.168.204.129
   redis:
     host: 192.168.204.129
+jwt:
+  config:
+    key: lhozy
+    #一小时过期
+    ttl: 3600000
+
