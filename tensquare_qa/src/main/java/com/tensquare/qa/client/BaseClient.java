@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
  * @author bruce
  * @date 2020/1/19 0019 - 下午 10:07
  */
-@FeignClient("tensquare-base")
+@FeignClient(value = "tensquare-base")
 public interface BaseClient {
     @GetMapping("/label/{id}")
 //    @RequestMapping(value = "/label/{id}",method = RequestMethod.GET)
