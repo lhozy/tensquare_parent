@@ -22,6 +22,7 @@ public class LabelController {
     @Autowired
     private LabelService labelService;
 
+
     @PostMapping
     public Result add(@RequestBody Label label){
         labelService.save(label);
@@ -39,11 +40,12 @@ public class LabelController {
         labelService.deleteLabelById(id);
         return new Result(true,StatusCode.OK,"删除成功");
     }
-    @GetMapping("/{id}")
-    public Result get(@PathVariable String id){
-        int i = 1/0;
-        Label label = labelService.findOne(id);
-        return new Result(true,StatusCode.OK,"查询成功",label);
+//    @GetMapping("/{id}")
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
+    public Result findById(@PathVariable("id") String id){
+        //int i = 1/0;
+        //Label label = labelService.findById(labelid);
+        return new Result(true,StatusCode.OK,"查询成功",labelService.findById(id));
     }
     @GetMapping
     public Result findAll(){

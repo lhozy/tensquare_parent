@@ -77,4 +77,8 @@ public class LabelService {
             return cb.and(labelname,state);
         },pageable);
     }
+
+    public Label findById(String id) {
+        return labelRepository.findById(id).get();
+    }
 }

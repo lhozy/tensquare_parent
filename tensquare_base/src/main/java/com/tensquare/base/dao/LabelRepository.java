@@ -9,4 +9,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * @date 2020/1/12 0012 - 下午 7:59
  */
 public interface LabelRepository extends JpaRepository<Label,String>, JpaSpecificationExecutor<Label> {
+
 }
