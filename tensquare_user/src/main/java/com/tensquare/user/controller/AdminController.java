@@ -31,7 +31,8 @@ public class AdminController {
 		if (login == null) {
 			return new Result(false, StatusCode.LOGINERROR,"用户名或密码错误");
 		}
-		return new Result(true,StatusCode.OK,"登录成功");
+		Map<String,String> map = adminService.createToken(login);
+		return new Result(true,StatusCode.OK,"登录成功",map);
 	}
 	/**
 	 * 查询全部数据

@@ -1,5 +1,6 @@
 package com.tensquare.user.controller;
 import entity.Result;
+import entity.StatusCode;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +18,6 @@ public class BaseExceptionHandler {
     public Result error(HttpServletResponse httpServletResponse, Exception e) throws IOException, ServletException {
         e.printStackTrace();        
         System.out.println( "出错信息："+ e.getMessage());
-        return new Result(false, 1001, "执行出错");
+        return new Result(false, StatusCode.ERROR, e.getMessage());
     }
 }

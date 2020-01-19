@@ -1,9 +1,6 @@
 package com.tensquare.user.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -24,6 +21,7 @@ import util.IdWorker;
 
 import com.tensquare.user.dao.AdminDao;
 import com.tensquare.user.pojo.Admin;
+import util.JwtUtil;
 
 /**
  * 服务层
@@ -41,6 +39,8 @@ public class AdminService {
 	private IdWorker idWorker;
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	@Autowired
+	private JwtUtil jwtUtil;
 
 
 	public Admin login(Admin admin){
@@ -156,4 +156,17 @@ public class AdminService {
 
 	}
 
+	public Map<String, String> createToken(Admin login) {
+
+		//模拟角色是admin
+		String roles = "admin";
+
+		jwtUtil.setKey("tokenkey");
+		jwtUtil.setTtl(3600000);
+		String token = jwtUtil.createJWT(login.getId(), login.getLoginname(), roles);
+		Map<String,String> map = new HashMap<>();
+		map.put("token",token);
+		map.put("roles",roles);
+		return map;
+	}
 }
