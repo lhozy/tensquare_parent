@@ -17,6 +17,6 @@ public class BaseExceptionHandler {
     public Result error(HttpServletResponse httpServletResponse, Exception e) throws IOException, ServletException {
         e.printStackTrace();        
         System.out.println( "出错信息："+ e.getMessage());
-        return new Result(false, 1001, "执行出错");
+        return new Result(false, 1001, e.getMessage());
     }
 }

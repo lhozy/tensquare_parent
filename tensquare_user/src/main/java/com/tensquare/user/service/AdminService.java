@@ -10,6 +10,7 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -41,6 +42,8 @@ public class AdminService {
 	private BCryptPasswordEncoder passwordEncoder;
 	@Autowired
 	private JwtUtil jwtUtil;
+
+	private String key;
 
 
 	public Admin login(Admin admin){
@@ -158,11 +161,9 @@ public class AdminService {
 
 	public Map<String, String> createToken(Admin login) {
 
-		//模拟角色是admin
+		//模拟查询取到角色是admin
 		String roles = "admin";
-
-		jwtUtil.setKey("tokenkey");
-		jwtUtil.setTtl(3600000);
+		//生产token
 		String token = jwtUtil.createJWT(login.getId(), login.getLoginname(), roles);
 		Map<String,String> map = new HashMap<>();
 		map.put("token",token);

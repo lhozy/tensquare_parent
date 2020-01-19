@@ -17,7 +17,7 @@ spring:
     host: 192.168.204.129
 jwt:
   config:
-    key: lhozy
+    key: customkey
     #一小时过期
     ttl: 3600000
 

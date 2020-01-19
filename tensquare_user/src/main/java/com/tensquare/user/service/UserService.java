@@ -9,8 +9,10 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,6 +50,8 @@ public class UserService {
 	private RabbitTemplate rabbitTemplate;
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	@Autowired
+	private HttpServletRequest httpServletRequest;
 
 /**
 	 * 查询全部列表
@@ -115,6 +119,11 @@ public class UserService {
 	 * @param id
 	 */
 	public void deleteById(String id) {
+		//判断用户是否有权限执行
+		String token = (String) httpServletRequest.getAttribute("claims_admin");
+		if (StringUtils.isEmpty(token)){
+			throw new RuntimeException("权限不足");
+		}
 		userDao.deleteById(id);
 	}
 
