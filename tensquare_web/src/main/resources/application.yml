@@ -1,0 +1,22 @@
+server:
+  port: 9091
+spring:
+  application:
+    name: tensquare-web
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:6868/eureka
+  instance:
+    prefer-ip-address: true
+zuul:
+  routes:
+    tensquare-user:
+      path: /user/**
+      serviceId: tensquare-user
+    tensquare-base:
+      path: /base/**
+      serviceId: tensquare-base
+    tensquare-qa:
+      path: /**
+      serviceId: tensquare-qa
