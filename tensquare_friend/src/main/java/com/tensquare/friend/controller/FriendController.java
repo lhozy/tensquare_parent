@@ -1,5 +1,7 @@
 package com.tensquare.friend.controller;
 
+import com.tensquare.friend.client.UserClient;
+import com.tensquare.friend.dao.NoFriendDao;
 import com.tensquare.friend.service.FriendService;
 import entity.Result;
 import entity.StatusCode;
@@ -22,6 +24,9 @@ public class FriendController {
     private HttpServletRequest request;
     @Autowired
     private FriendService friendService;
+    @Autowired
+    private UserClient userClient;
+
 
     @PutMapping("/like/{friendid}/{type}")
     public Result addFriend(@PathVariable("friendid") String friendid,@PathVariable("type") String type){
@@ -30,18 +35,26 @@ public class FriendController {
             return new Result(false,StatusCode.ERROR,"权限不足");
         }
         if (type != null) {
+            String userId = claims.getId();
             if (type.equals("1")){
                 //添加好友
-                String userId = claims.getId();
                 int flag = friendService.addFriend(userId,friendid);
                 if (flag == 0){
-                    return new Result(false,StatusCode.ERROR,"不能重复添加好友");
+                    return new Result(false,StatusCode.ERROR,"不能重复添加");
                 }
                 if (flag == 1){
-                    return new Result(true,StatusCode.OK,"添加好友成功");
+                    userClient.updateFansAndFollowCount(userId,friendid,1);
+                    return new Result(true,StatusCode.OK,"添加成功");
                 }
             }else if (type.equals("2")){
-                //删除好友
+                //添加非好友
+                int flag = friendService.addNoFriend(userId, friendid);
+                if (flag == 0){
+                    return new Result(false,StatusCode.ERROR,"不能重复添加");
+                }
+                if (flag == 1){
+                    return new Result(true,StatusCode.OK,"添加成功");
+                }
             }
             return new Result(false,StatusCode.ERROR,"参数异常");
         }else {

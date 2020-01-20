@@ -1,7 +1,9 @@
 package com.tensquare.friend.service;
 
 import com.tensquare.friend.dao.FriendDao;
+import com.tensquare.friend.dao.NoFriendDao;
 import com.tensquare.friend.pojo.Friend;
+import com.tensquare.friend.pojo.NoFriend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,11 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class FriendService {
     @Autowired
     private FriendDao friendDao;
+    @Autowired
+    private NoFriendDao noFriendDao;
 
     public int addFriend(String userid, String friendid) {
         Friend friend = friendDao.findByUseridAndFriendid(userid, friendid);
         if (friend != null){
-            return 0;//重复添加
+            return 0;//0已存在不能重复添加,1新增
         }
         friend = new Friend();
         friend.setUserid(userid);
@@ -31,6 +35,18 @@ public class FriendService {
             friendDao.updatIslike("1",friendid,userid);
             friendDao.updatIslike("1",userid,friendid);
         }
+        return 1;
+    }
+    public int addNoFriend(String userid, String friendid){
+        //0已存在不能重复添加,1新增
+        NoFriend noFriend = noFriendDao.findByUseridAndFriendid(userid, friendid);
+        if (noFriend != null) {
+            return 0;
+        }
+        noFriend = new NoFriend();
+        noFriend.setUserid(userid);
+        noFriend.setFriendid(friendid);
+        noFriendDao.save(noFriend);
         return 1;
     }
 }
