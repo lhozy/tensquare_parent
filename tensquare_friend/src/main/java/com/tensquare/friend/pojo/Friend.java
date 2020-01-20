@@ -18,7 +18,7 @@ public class Friend implements Serializable {
     private String userid;
     @Id
     private String friendid;
-    private String islike;//1表示相互是好友，0表示单相是好友
+    private String islike;//1表示相互是好友，0表示单相是好友，88表示删除好友
 
     public String getUserid() {
         return userid;

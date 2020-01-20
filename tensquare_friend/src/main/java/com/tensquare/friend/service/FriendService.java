@@ -1,5 +1,6 @@
 package com.tensquare.friend.service;
 
+import com.tensquare.friend.client.UserClient;
 import com.tensquare.friend.dao.FriendDao;
 import com.tensquare.friend.dao.NoFriendDao;
 import com.tensquare.friend.pojo.Friend;
@@ -19,10 +20,12 @@ public class FriendService {
     private FriendDao friendDao;
     @Autowired
     private NoFriendDao noFriendDao;
+    @Autowired
+    private UserClient userClient;
 
     public int addFriend(String userid, String friendid) {
         Friend friend = friendDao.findByUseridAndFriendid(userid, friendid);
-        if (friend != null){
+        if (friend != null) {
             return 0;//0已存在不能重复添加,1新增
         }
         friend = new Friend();
@@ -48,5 +51,10 @@ public class FriendService {
         noFriend.setFriendid(friendid);
         noFriendDao.save(noFriend);
         return 1;
+    }
+
+    public void deleteFriend(String userid, String friendid) {
+        friendDao.updatIslike("88", userid, friendid);//标识为删除状态88
+        userClient.updateFansAndFollowCount(userid, friendid, -1);//更改粉丝和关注
     }
 }

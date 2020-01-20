@@ -52,14 +52,25 @@ public class FriendController {
                 if (flag == 0){
                     return new Result(false,StatusCode.ERROR,"不能重复添加");
                 }
-                if (flag == 1){
-                    return new Result(true,StatusCode.OK,"添加成功");
+                if (flag == 1) {
+                    return new Result(true, StatusCode.OK, "添加成功");
                 }
             }
-            return new Result(false,StatusCode.ERROR,"参数异常");
-        }else {
-            return new Result(false,StatusCode.ERROR,"参数异常");
+            return new Result(false, StatusCode.ERROR, "参数异常");
+        } else {
+            return new Result(false, StatusCode.ERROR, "参数异常");
         }
 
+    }
+
+    @DeleteMapping("/{friendid}")
+    public Result deleteFriend(@PathVariable String friendid) {
+        Claims claims = (Claims) request.getAttribute("claims_user");
+        if (null == claims) {
+            return new Result(false, StatusCode.ERROR, "失败");
+        }
+        String userid = claims.getId();
+        friendService.deleteFriend(userid, friendid);
+        return new Result(true, StatusCode.OK, "成功");
     }
 }
