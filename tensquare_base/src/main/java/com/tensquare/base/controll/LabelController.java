@@ -35,6 +35,7 @@ public class LabelController {
         return new Result(true, StatusCode.OK,"添加成功");
 
     }
+
     @PutMapping("/{id}")
     public Result edit(@RequestBody Label label,@PathVariable String id){
         label.setId(id);
