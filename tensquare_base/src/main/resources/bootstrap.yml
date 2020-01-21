@@ -1,0 +1,14 @@
+#spring:
+#  cloud:
+#    config:
+#      name: base
+#      profile: dev
+#      label: master
+#      uri: http://localhost:12000
+spring:
+  cloud:
+    config:
+      name: base
+      profile: dev
+      label: master
+      uri: http://localhost:12000

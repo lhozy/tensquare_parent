@@ -6,6 +6,8 @@ import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,11 +21,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/label")
 @CrossOrigin //允许跨域
+@RefreshScope
 public class LabelController {
     @Autowired
     private LabelService labelService;
-//    @Autowired
-//    private HttpServletRequest request;
+    @Value("${customkey}")
+    private String customkey;
 
 
     @PostMapping
@@ -53,6 +56,7 @@ public class LabelController {
     public Result findAll(){
 //        String authorization = request.getHeader("Authorization");
 //        System.out.println(authorization);
+        System.out.println("配置文件中自定义的字段customkey："+customkey);
         List<Label> labels = labelService.findAll();
         return new Result(true,StatusCode.OK,"查询所有",labels);
     }

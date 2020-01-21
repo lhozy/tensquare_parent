@@ -7,4 +7,11 @@ spring:
     config:
       server:
         git:
-          uri: https://gitee.com/lhozy/tens_dev.git
+          uri: https://gitee.com/lhozy/config.git
+  rabbitmq:
+    host: 192.168.204.129
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh
